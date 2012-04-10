@@ -5,6 +5,7 @@ Moose is a command-line tool that looks for YAML-formatted Swagger resource decl
 ![The moose himself](http://aaronmccall.github.com/moose_like_swagger.js/docs/the_moose_himself.png)
 
 ## Example:
+Let's say you have the following Javascript code in views.js.
 
 ```javascript
 /*
@@ -63,6 +64,92 @@ apis:
 $$$
 */
 ```
+Calling `moose -o spec views.js` will 
 
+1.  extract the YAML data between the '$$$' delimiters. Creating a YAML multi-doc that looks like so: 
 
+```yaml
+    ---
+    swaggerMeta:
+      name: user.json
+      description: Operations for users
+    resourcePath: /user
+    basePath: url
+    swaggerVersion: 1.1-SHAPSHOT.121026
+    apiVersion: 0.1
+    apis:
+      - # begin API endppoint
+        path: /user
+        description: Create a user
+        operations:
+          - # create a user (createUser)
+            parameters:
+            -
+              description:        Create instance of User
+              dataType:           user
+              required:           true
+              valueTypeInternal:  models.user.User
+              allowMultiple:      false
+              paramType:          body
+            httpMethod:           POST
+            responseTypeInternal: models.user.User
+            nickname:             createUser
+            responseClass:        user
+    ---
+    swaggerMeta:
+      name: resources.json
+      description: API resource definition
+    basePath: url
+    swaggerVersion: 1.1-SHAPSHOT.121026
+    apiVersion: 0.1
+    apis:
+```
 
+2. Convert the YAML into two separate JSON documents in the `spec` folder
+
+```javascript
+// resources.json
+{
+  "basePath": "url",
+  "swaggerVersion": "1.1-SHAPSHOT.121026",
+  "apiVersion": 0.1,
+  "apis": [
+    {
+      "path": "/user.{format}",
+      "description": "Operations for users"
+    }
+  ]
+}
+
+// user.json
+{
+  "resourcePath": "/user",
+  "basePath": "url",
+  "swaggerVersion": "1.1-SHAPSHOT.121026",
+  "apiVersion": 0.1,
+  "apis": [
+    {
+      "path": "/user",
+      "description": "Create user",
+      "operations": [
+        {
+          "parameters": [
+            {
+              "description": "Create instance of User",
+              "dataType": "user",
+              "required": true,
+              "valueTypeInternal": "models.user.User",
+              "allowMultiple": false,
+              "paramType": "body"
+            }
+          ],
+          "httpMethod": "POST",
+          "responseTypeInternal": "models.user.User",
+          "nickname": "createUser",
+          "responseClass": "user"
+        }
+      ]
+    }
+  ]
+}
+```
