@@ -59,6 +59,9 @@ console.log(argv._);
 async.forEach(argv._, processFile, function (err) {
     if (err) {
         console.log(('Error: '+err).red);
-        process.exit(1);
+        console.log('The swagger has left the building.');
+        return process.exit(1);
     }
+    console.log("You've got swagger! Like a MOOSE!".green);
 });
+
