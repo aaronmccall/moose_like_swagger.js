@@ -1,6 +1,6 @@
 # moose (like_swagger)
 
-Moose is a command-line tool that looks for YAML-formatted Swagger resource declarations, stitches them together, and outputs json resource files.
+Moose is a command-line tool that looks for YAML-formatted [Swagger](http://swagger.wordnik.com/) resource declarations, stitches them together, and outputs json resource files.
 
 ![The moose himself](http://aaronmccall.github.com/moose_like_swagger.js/docs/the_moose_himself.png)
 
@@ -66,7 +66,7 @@ $$$
 ```
 Calling `moose -o spec views.js` will 
 
-1.  extract the YAML data between the '$$$' delimiters. Creating a YAML multi-doc that looks like so: 
+First.  extract the YAML data between the '$$$' delimiters. Creating a YAML multi-doc that looks like so: 
 
 ```yaml
     ---
@@ -105,7 +105,7 @@ Calling `moose -o spec views.js` will
     apis:
 ```
 
-2. Convert the YAML into two separate JSON documents in the `spec` folder
+Second. Convert the YAML into two separate JSON documents in the `spec` folder
 
 ```javascript
 // resources.json
