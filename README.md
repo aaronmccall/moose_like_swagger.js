@@ -2,7 +2,7 @@
 
 Moose is a command-line tool that looks for YAML-formatted Swagger resource declarations, stitches them together, and outputs json resource files.
 
-![The moose himself](moose_like_swagger.js/docs/the_moose_himself.png)
+![The moose himself](https://github.com/aaronmccall/moose_like_swagger.js/blob/master/docs/the_moose_himself.png)
 
 ## Example:
 
