@@ -18,7 +18,19 @@ var moose = require('../lib/moose_like_swagger.js'),
             alias: 'inputdir',
             default: '.'
         })
+        .options('v', {
+            alias: 'version',
+            "boolean": true
+        })
         .check(function (argv) {
+            if (argv.v) {
+                var bullwinkle = fs.readFileSync('lib/bullwinkle.txt', 'utf-8'),
+                    info = JSON.parse(fs.readFileSync('package.json', 'utf-8'));
+                console.log('Make your API swagger...'.cyan.bold);
+                console.log(bullwinkle.magenta)
+                console.log(("moose_like_swagger.js -- Version: " + info.version).cyan);
+                process.exit(0);
+            }
             if (argv.i && !path.existsSync(argv.i)) {
                 throw new Error('Input directory does not exist'.red);
             }
