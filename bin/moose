@@ -1,0 +1,52 @@
+#!/usr/bin/env node
+var moose = require('../lib/moose_like_swagger.js'),
+    async = require('async'),
+    path = require('path'),
+    fs = require('fs'),
+    colors = require('colors'),
+    argv = require('optimist')
+        .usage('moose [options] file1 file2...'.cyan)
+        .options('o', {
+            alias: 'outdir',
+            default: './spec'
+        })
+        .options('d', {
+            alias: 'delimiter',
+            default: "^\\s*\\$\\$\\$\\s*$"
+        })
+        .options('i', {
+            alias: 'inputdir',
+            default: '.'
+        })
+        .check(function (argv) {
+            if (argv.i && !path.existsSync(argv.i)) {
+                throw new Error('Input directory does not exist'.red);
+            }
+            if (argv.o && !path.existsSync(argv.o)) {
+                throw new Error('Output directory does not exist'.red);
+            }
+            if (!argv._.length) throw new Error('No files provided.'.red);
+        })
+        .argv,
+    swag_delim = new RegExp(argv.d);
+
+function processFile(filename, loopDone) {
+    var filepath = path.join(argv.i, filename);
+    if (!path.existsSync(filepath)) {
+        loopDone(("'" + filename + "' not found in '" + argv.i + "'").red)
+    }
+    console.log("processing '" + filename + "'");
+    fs.readFile(filepath, 'utf-8', function handleFile(err, file) {
+        if (err) return loopDone("Problem with '" + file + "' - ", err);
+        moose.makeSwagger(file, swag_delim, argv.o, loopDone);
+    });
+}
+
+console.log(argv._);
+
+async.forEach(argv._, processFile, function (err) {
+    if (err) {
+        console.log(('Error: '+err).red);
+        process.exit(1);
+    }
+});
