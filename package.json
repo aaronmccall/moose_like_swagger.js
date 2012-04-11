@@ -11,5 +11,10 @@
         "js-yaml": "",
         "lazy": "",
         "optimist": ""
-    }
+    },
+    "author": {
+        "name":     "Aaron McCall",
+        "email":    "aaron@andyet.net",
+        "url":      "http://blog.aaronmccall.com"
+    } 
 }
